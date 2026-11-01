@@ -1,98 +1,126 @@
-# 📺 TV Review App
+# TV Review App
 
-A Python-based command-line application for tracking television episodes, recording reviews, and comparing episode ratings with a local SQLite database.
+A Python command-line application for cataloging television episodes, rating each episode across five categories, and comparing results using a local SQLite database.
 
 ## Overview
 
-TV Review App lets users maintain a collection of television episodes and evaluate each episode across five rating categories. The application calculates an overall score from those category ratings and makes it possible to identify the highest- and lowest-rated episodes.
+TV Review App lets users record television episodes and evaluate them with a consistent scoring system. Each episode receives five integer scores, and the application calculates an overall rating as their arithmetic mean.
 
-The project demonstrates Python application development, relational database integration, SQL-based data management, and persistent storage.
+The project demonstrates Python application logic, relational data storage, SQL queries, and SQLite integration.
 
 ## Features
 
-- **Add episodes:** Record a series name, season, episode number, and episode title.
-- **Rate episodes:** Enter scores across five rating categories.
-- **Calculate an overall score:** Average the five category ratings.
-- **Persist data:** Store episode information and reviews in an SQLite database.
-- **Compare ratings:** Identify highest- and lowest-rated episodes.
-- **Retrieve organized results:** View and sort episode information.
+- Add episodes with series, season, episode number, and title.
+- Rate episodes on entertainment, drama, iconic moments, emotional reaction, and watchability.
+- Calculate an overall score from the five category ratings.
+- Persist episode records in SQLite.
+- View highest- and lowest-rated episodes.
+- Sort episodes by series name or season.
 
-## Technologies
+## Technology Stack
 
 | Technology | Purpose |
 | --- | --- |
-| Python 3 | Application logic |
+| Python 3 | Application logic and command-line interface |
 | SQLite | Local relational database |
-| SQL | Data storage and retrieval |
+| SQL | Table creation, inserts, and ordered queries |
+| Python `sqlite3` | Database connections and transactions |
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3
-- SQLite support through Python's standard-library `sqlite3` module
+- No third-party packages required; `sqlite3` is included with Python.
 
-### Installation
+### Run locally
 
-1. Clone this repository:
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/krlars27/tvReviewApp.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
    cd tvReviewApp
    ```
 
-3. Run the application:
+2. Run the application:
 
    ```bash
    python app.py
    ```
 
-   On systems where Python 3 is invoked separately, use `python3 app.py`.
+   Use `python3 app.py` if that is the Python command on your system.
 
-> **Note:** The commands above assume the application entry point is `app.py`. Adjust the run command if your entry-point filename is different.
+The application creates `tv_reviews.db` if it does not already exist and creates the `episodes` table at startup.
 
-## How Ratings Work
+## Using the Application
 
-Each episode is scored in five individual categories. The application calculates the overall rating as the arithmetic mean of those scores:
+Choose an option from the command-line menu:
+
+| Option | Action |
+| --- | --- |
+| 1 | Add an episode and enter five category scores |
+| 2 | Display episodes from highest to lowest rating |
+| 3 | Display episodes from lowest to highest rating |
+| 4 | Sort episodes by series name |
+| 5 | Sort episodes by season |
+| 6 | Exit |
+
+Each category is intended to be scored from 1 to 5. The overall score is:
 
 ```text
-Overall rating = (Category 1 + Category 2 + Category 3 + Category 4 + Category 5) / 5
+(Entertainment + Drama + Iconic + Emotional + Watchability) / 5
 ```
 
-## Database
+## Database Design
 
-The application uses SQLite for local data persistence. SQLite is accessed through Python's built-in `sqlite3` module, so a separate database server is not required.
+The application creates an `episodes` table with the following fields:
 
-The database stores episode details and their associated ratings. The database file is created or used by the application at runtime, depending on its implementation.
+| Column | Type | Description |
+| --- | --- | --- |
+| `id` | INTEGER | Auto-incrementing primary key |
+| `series_name` | TEXT | Television series title |
+| `season` | INTEGER | Season number |
+| `episode_number` | INTEGER | Episode number |
+| `episode_name` | TEXT | Episode title |
+| `entertainment` | INTEGER | Entertainment score |
+| `drama` | INTEGER | Drama score |
+| `iconic` | INTEGER | Iconic moments score |
+| `emotional` | INTEGER | Emotional reaction score |
+| `watchable` | INTEGER | Watchability score |
+| `rating` | REAL | Average of the five category scores |
+
+Episode records are inserted using parameterized SQL values. SQLite runs locally, so no separate database server is needed.
+
+## Project Structure
+
+```text
+tvReviewApp/
+├── app.py          # Command-line interface and SQLite operations
+├── tv_reviews.db   # SQLite database
+└── README.md       # Project documentation
+```
 
 ## Skills Demonstrated
 
-- Python programming and application logic
-- Relational database concepts
-- SQLite integration and data persistence
-- SQL queries and data retrieval
+- Python functions and command-line interaction
+- Relational database design and table creation
+- SQLite connections, transactions, and persistent storage
+- SQL `INSERT`, `SELECT`, and `ORDER BY` queries
+- Parameterized SQL statements
 - Data processing and average calculations
-- Command-line application development
 
 ## Potential Improvements
 
-- Add the ability to edit and delete episode reviews.
-- Add automated unit tests for rating calculations and database operations.
-- Provide additional statistics and reporting.
-- Build a graphical or web-based interface.
-- Separate database access from application logic as the project grows.
+- Validate input and enforce the 1–5 rating range.
+- Add options to edit and delete episode records.
+- Add search and filtering by series.
+- Create automated tests for rating calculations and database operations.
+- Separate database access from command-line interface logic.
 
 ## Author
 
-**Kevin Larson**
-
-[GitHub Profile](https://github.com/krlars27)
+**Kevin Larson** · [GitHub Profile](https://github.com/krlars27)
 
 ---
 
-*Personal software development project demonstrating Python programming and relational database management.*
+*A Python and SQLite project focused on relational data management and practical SQL operations.*
