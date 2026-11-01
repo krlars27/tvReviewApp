@@ -4,25 +4,32 @@ DATABASE_NAME = "tv_reviews.db"
 RATING_MIN = 1
 RATING_MAX = 5
 
-conn = sqlite3.connect(DATABASE_NAME)
-cursor = conn.cursor()
+conn = None
+cursor = None
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS episodes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    series_name TEXT NOT NULL,
-    season INTEGER NOT NULL CHECK (season >= 0),
-    episode_number INTEGER NOT NULL CHECK (episode_number > 0),
-    episode_name TEXT NOT NULL,
-    entertainment INTEGER NOT NULL CHECK (entertainment BETWEEN 1 AND 5),
-    drama INTEGER NOT NULL CHECK (drama BETWEEN 1 AND 5),
-    iconic INTEGER NOT NULL CHECK (iconic BETWEEN 1 AND 5),
-    emotional INTEGER NOT NULL CHECK (emotional BETWEEN 1 AND 5),
-    watchable INTEGER NOT NULL CHECK (watchable BETWEEN 1 AND 5),
-    rating REAL NOT NULL
-)
-""")
-conn.commit()
+
+def initialize_database():
+    """Open the SQLite database and create the episodes table if needed."""
+    global conn, cursor
+
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS episodes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            series_name TEXT NOT NULL,
+            season INTEGER NOT NULL CHECK (season >= 0),
+            episode_number INTEGER NOT NULL CHECK (episode_number > 0),
+            episode_name TEXT NOT NULL,
+            entertainment INTEGER NOT NULL CHECK (entertainment BETWEEN 1 AND 5),
+            drama INTEGER NOT NULL CHECK (drama BETWEEN 1 AND 5),
+            iconic INTEGER NOT NULL CHECK (iconic BETWEEN 1 AND 5),
+            emotional INTEGER NOT NULL CHECK (emotional BETWEEN 1 AND 5),
+            watchable INTEGER NOT NULL CHECK (watchable BETWEEN 1 AND 5),
+            rating REAL NOT NULL
+        )
+    """)
+    conn.commit()
 
 
 def get_non_empty_text(prompt):
@@ -160,8 +167,10 @@ def main_menu():
 
 if __name__ == "__main__":
     try:
+        initialize_database()
         main_menu()
     except (KeyboardInterrupt, EOFError):
         print("\nApplication closed.")
     finally:
-        conn.close()
+        if conn is not None:
+            conn.close()
