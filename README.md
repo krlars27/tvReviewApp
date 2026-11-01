@@ -100,6 +100,18 @@ tvReviewApp/
 └── README.md       # Project documentation
 ```
 
+## Running Automated Tests
+
+The project includes unit tests for rating calculations and input validation using Python\'s built-in `unittest` framework. No additional packages are required.
+
+Run the test suite from the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Use `python3 -m unittest discover -s tests -v` if your system uses `python3`.
+
 ## Skills Demonstrated
 
 - Python functions and command-line interaction
